@@ -20,11 +20,11 @@ def main():
         
         # Ejecutar query de compras
         print("\n[2/5] Extrayendo datos de compras...")
-        df_compras = db.execute_query_from_file('querys/qy_analisis_compras.sql')
+        df_compras = db.execute_query_from_file('queries/qy_analisis_compras.sql')
         
         # Ejecutar query de reprogramación
         print("\n[3/5] Extrayendo datos de reprogramación...")
-        df_repro = db.execute_query_from_file('querys/qy_analisis_reprogramacion.sql')
+        df_repro = db.execute_query_from_file('queries/qy_analisis_reprogramacion.sql')
         
         # Procesar compras
         print("\n[4/5] Procesando compras...")
