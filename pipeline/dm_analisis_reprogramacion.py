@@ -13,9 +13,9 @@ def llenar_datos_equipo(df):
             
         filas_equipo = df[df['equipo_codigo'] == codigo]
         
-        tipo = filas_equipo['equipo_tipo'].replace(['NULL', '', np.nan], np.nan).infer_objects(copy=False).mode()
-        marca = filas_equipo['equipo_marca'].replace(['NULL', '', np.nan], np.nan).infer_objects(copy=False).mode()
-        modelo = filas_equipo['equipo_modelo'].replace(['NULL', '', np.nan], np.nan).infer_objects(copy=False).mode()
+        tipo = filas_equipo['equipo_tipo'].replace(['NULL', '', np.nan], np.nan).mode()
+        marca = filas_equipo['equipo_marca'].replace(['NULL', '', np.nan], np.nan).mode()
+        modelo = filas_equipo['equipo_modelo'].replace(['NULL', '', np.nan], np.nan).mode()
         
         equipos_dict[codigo] = {
             'tipo': tipo.iloc[0] if len(tipo) > 0 else None,
