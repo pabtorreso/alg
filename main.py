@@ -43,24 +43,27 @@ def main():
         print("OK - Guardado: output/dm_analisis_reprogramacion.csv")
         
         # ===== FASE 3: POBLACION =====
-        print("\n[FASE 3] POBLACION DE CATALOGOS")
+        print("\n[FASE 3] POBLACION DE CATALOGOS Y TABLAS")
         print("="*70)
         
         db_populate = DatabasePopulateService()
         
-        print("\n[1/2] Creando tablas temporales...")
+        print("\n[1/3] Creando tablas temporales...")
         df_compras_proc.to_sql('temp_compras', db_populate.engine, if_exists='replace', index=False)
         df_repro_proc.to_sql('temp_reprogramacion', db_populate.engine, if_exists='replace', index=False)
         print("OK - Tablas temporales creadas")
         
-        print("\n[2/2] Poblando catalogos...")
+        print("\n[2/3] Poblando catalogos...")
         db_populate.execute_query_from_file('queries/populate/populate_catalogos.sql')
+        
+        print("\n[3/3] Poblando REPROGRAMACION_OTM...")
+        db_populate.execute_query_from_file('queries/populate/populate_reprogramacion_otm.sql')
         
         print("\n" + "="*70)
         print("OK - PROCESO COMPLETADO")
         print("="*70)
         print("\nCSVs generados en: output/")
-        print("Catalogos poblados: MOTIVO_COMPRA, ITEM, MOTIVO_REPROGRAMACION")
+        print("Tablas pobladas: MOTIVO_COMPRA, ITEM, MOTIVO_REPROGRAMACION, REPROGRAMACION_OTM")
         
     except FileNotFoundError as e:
         print(f"\nERROR: Archivo no encontrado - {e}")
@@ -73,10 +76,18 @@ def main():
         sys.exit(1)
         
     finally:
+        if db_populate:
+            try:
+                print("\n[LIMPIEZA] Eliminando tablas temporales...")
+                db_populate.execute_populate_query("DROP TABLE IF EXISTS temp_compras")
+                db_populate.execute_populate_query("DROP TABLE IF EXISTS temp_reprogramacion")
+                print("✓ Tablas temporales eliminadas")
+            except Exception as e:
+                print(f"⚠ Error al limpiar tablas temporales: {e}")
+            finally:
+                db_populate.close()
         if db_fetch:
             db_fetch.close()
-        if db_populate:
-            db_populate.close()
 
 if __name__ == "__main__":
     main()
