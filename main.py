@@ -413,11 +413,11 @@ def main():
     exitoso = True
     
     # Pipeline 1: Reprogramaciones
-    #try:
-    #    ejecutar_proceso_reprogramacion()
-    #except Exception as e:
-    #    print(f"Error en pipeline de reprogramaciones: {e}")
-    #    exitoso = False
+    try:
+        ejecutar_proceso_reprogramacion()
+    except Exception as e:
+        print(f"Error en pipeline de reprogramaciones: {e}")
+        exitoso = False
     
     # Pipeline 2: Compras
     try:
